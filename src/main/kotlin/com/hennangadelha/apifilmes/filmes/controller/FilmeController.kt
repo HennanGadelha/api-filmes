@@ -26,10 +26,10 @@ class FilmeController(private val filmeService: FilmeService) {
     @Get
     fun listarTodos() : HttpResponse<List<FilmeResponse>>{
 
-        val filmess: List<FilmeResponse> =
-            filmeService.listarTodos().map { FilmeResponse(it.getTitulo(), it.getSinopse()) }
+        val filmes: List<FilmeResponse> =
+            filmeService.listarTodos().map { FilmeResponse( it.filmeUuid.toString(), it.getTitulo(), it.getSinopse()) }
 
-        return ok(filmess)
+        return ok(filmes)
     }
 
     @Get("/{filmeUuid}")
@@ -37,7 +37,9 @@ class FilmeController(private val filmeService: FilmeService) {
 
         val filme = filmeService.buscarPorId(filmeUuid)
 
-        return ok(FilmeResponse(filme!!.get().getTitulo(), filme.get().getSinopse()))
+        if (filme!!.isEmpty) return notFound()
+
+        return ok(FilmeResponse(filme!!.get().filmeUuid.toString(), filme!!.get().getTitulo(), filme.get().getSinopse()))
     }
 
     @Delete("/{filmeUuid}")
@@ -53,13 +55,16 @@ class FilmeController(private val filmeService: FilmeService) {
 
 
         val filme = filmeService.buscarPorId(filmeUuid)
+
         filme!!.get().setTitulo(request.titulo)
         filme.get().setSinopse(request.sinopse)
+
+        if (filme!!.isEmpty) return notFound()
 
         filmeService.alterar(filmeUuid, filme.get())
 
         return ok<FilmeResponse>()
-            .body(FilmeResponse(filme.get().getTitulo(), filme.get().getSinopse()))
+            .body(FilmeResponse(filme.get().filmeUuid.toString(), filme.get().getTitulo(), filme.get().getSinopse()))
     }
 
 
