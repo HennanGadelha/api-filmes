@@ -3,7 +3,7 @@ package com.hennangadelha.apifilmes.filmes.service
 import com.hennangadelha.apifilmes.filmes.models.Filme
 import java.util.*
 
-interface FilmeServiceNoSql {
+interface FilmeServiceScyllaDb {
 
     fun cadastrar(filme: Filme) : Filme;
 

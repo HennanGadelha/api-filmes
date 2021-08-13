@@ -1,14 +1,9 @@
 micronaut:
   application:
     name: apiFilmes
-datasources:
-  default:
-    url: jdbc:h2:mem:filmesapi;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-    driverClassName: org.h2.Driver
-    username: sa
-    password: ""
-    schema-generate: CREATE_DROP
-    dialect: H2
+  server:
+    port: 8085
+
 jpa:
   default:
     properties:
@@ -17,6 +12,20 @@ jpa:
           auto: update
         show_sql: true
         format_sql: true
+
+cassandra:
+  default:
+    basic:
+      contact-points:
+        - ${cassandra_contact_points:localhost}
+      session-keyspace: ${cassandra_session_keyspace:filmesdb}
+      load-balancing-policy:
+        local-datacenter: ${cassandra_local_datacenter:datacenter1}
+
+
+
+
+
 
 endpoints:
   health:

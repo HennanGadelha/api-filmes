@@ -42,6 +42,10 @@ dependencies {
 
     implementation("io.micronaut:micronaut-management")
 
+    implementation group: 'com.datastax.cassandra', name: 'cassandra-driver-core', version: '3.10.2'
+    implementation("io.micronaut.cassandra:micronaut-cassandra")
+
+
 }
 
 
@@ -63,6 +67,7 @@ tasks {
             jvmTarget = "11"
         }
     }
+
 
 
 }

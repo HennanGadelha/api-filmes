@@ -7,7 +7,7 @@ import java.util.*
 import javax.inject.Singleton
 
 @Singleton
-class FilmeServiceNoSqlImpl(private val cqlSession: CqlSession) : FilmeServiceNoSql {
+class FilmeServiceScyllaDbImpl(private val cqlSession: CqlSession) : FilmeServiceScyllaDb {
 
     override fun cadastrar(filme: Filme): Filme {
 
@@ -18,28 +18,22 @@ class FilmeServiceNoSqlImpl(private val cqlSession: CqlSession) : FilmeServiceNo
                 filme.titulo,
                 filme.sinopse
             )
-
         )
-
         return filme
-
     }
 
     override fun listarTodos(): List<Filme> {
 
         val resultQuery = cqlSession.execute(
-
             SimpleStatement
                 .newInstance("SELECT * FROM filmesdb.filme")
         )
-
         return resultQuery.map {
             Filme(
                 it.getUuid("filmeUuid"),
                 it.getString("titulo"), it.getString("sinopse")
             )
         }.toList()
-
     }
 
     override fun buscarPorId(filmeUuid: UUID): Filme {
@@ -48,7 +42,6 @@ class FilmeServiceNoSqlImpl(private val cqlSession: CqlSession) : FilmeServiceNo
             SimpleStatement
                 .newInstance("SELECT * FROM filme WHERE filmeuuid = $filmeUuid")
         )
-
         return filme.map {
             Filme(
                 it.getUuid("filmeUuid"),
@@ -65,20 +58,16 @@ class FilmeServiceNoSqlImpl(private val cqlSession: CqlSession) : FilmeServiceNo
         )
     }
 
-    override fun alterar(filmeUuid: UUID,filme: Filme): Filme {
+    override fun alterar(filmeUuid: UUID, filme: Filme): Filme {
 
         cqlSession.execute(
             SimpleStatement.newInstance(
                 "UPDATE filmesdb.filme SET titulo = ?, sinopse = ? WHERE filmeuuid = $filmeUuid",
                 filme.titulo,
                 filme.sinopse
-
-
             )
-
         )
         return filme
     }
-
 
 }
