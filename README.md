@@ -6,15 +6,24 @@
 - [Micronaut Guides](https://guides.micronaut.io/index.html)
 ---
 
-## Feature hibernate-validator documentation
+## Seguir os comandos realizados ##
+## Criando container docker com imagem do scylla
 
-- [Micronaut Hibernate Validator documentation](https://micronaut-projects.github.io/micronaut-hibernate-validator/latest/guide/index.html)
+- docker run --name apifilmes -p 9042:9042 --hostname apifilmes -d scylladb/scylla
 
-## Feature jdbc-hikari documentation
+## Entrando no shell cql do container criado (aguardar 90s para realizar comando)
 
-- [Micronaut Hikari JDBC Connection Pool documentation](https://micronaut-projects.github.io/micronaut-sql/latest/guide/index.html#jdbc)
+-- docker exec -it apifilmes cqlsh
 
-## Feature http-client documentation
+## Criando keyspace
 
-- [Micronaut HTTP Client documentation](https://docs.micronaut.io/latest/guide/index.html#httpClient)
+-- CREATE KEYSPACE filmesdb WITH REPLICATION = { 'class' : 'SimpleStrategy', 'replication_factor' : 3};
+
+## Usando keyspace
+
+-- use filmesdb;
+
+## Criando tabela no keyspace 
+
+-- CREATE TABLE filme ( filmeUuid uuid, titulo text, sinopse text, PRIMARY KEY((filmeUuid))); 
 
